@@ -1,0 +1,4 @@
+.idea
+cache.sqlite
+venv
+.DS_Store
