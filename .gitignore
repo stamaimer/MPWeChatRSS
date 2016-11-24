@@ -2,3 +2,4 @@
 cache.sqlite
 venv
 .DS_Store
+*.pyc
