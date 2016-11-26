@@ -22,7 +22,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pyquery import PyQuery as pq
 from HTMLParser import HTMLParser
 
-requests_cache.install_cache()
+# requests_cache.install_cache()
 
 PARSER = HTMLParser()
 

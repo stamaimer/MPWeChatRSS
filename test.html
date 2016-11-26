@@ -1,0 +1,295 @@
+
+<!doctype html>
+<html>
+<head>
+    <link rel="shortcut icon" href="http://logo.www.sogou.com/images/logo2014/new/favicon.ico" type="image/x-icon">
+    <link href="https://www.sogou.com/sug/css/m3.min.v.7.css" rel="stylesheet" type="text/css">
+    <link href="/new/pc/css/weixin-public-new.min.css?v=20161107" rel="stylesheet" type="text/css">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="utf-8">
+    <title>叔的刀法的相关微信公众号 – 搜狗微信搜索</title>
+    
+    <script>
+        var sst = {h_s :(new Date()).getTime()};
+        var newpage = 1;
+        var passportUserId = "";
+        var oldQuery = "叔的刀法";
+        var gbkQuery = "%CA%E5%B5%C4%B5%B6%B7%A8";
+        var uuid = "a6156ac6-23be-42db-87c3-648b1f97a06d";
+        var keywords_string = "叔的刀法";
+        var sab = "0";
+        var keywords = oldQuery.split(' ');
+        var now = 1480162057281;
+        var idc = "sjs";
+        var clientIp = "59.172.110.101";
+    </script>
+    <script>
+    
+    </script>
+    <script src="/js/jquery-1.11.0.min.js" charset="gbk" ></script>
+    <script src="/js/lib/juicer-min.js"></script>
+    <script src="/new/pc/js/common.min.js?v=20161107"></script>
+</head>
+<body>
+    
+
+<!--start header-->
+<div class="header-box">
+    
+    <div class="login-info">
+        <a id="top_login" href="javascript:void(0);" uigs="home_login_top">登录</a>
+    </div>
+
+    <div class="header" id="scroll-header">
+        <a title="回到搜狗首页" href="/" name="scroll-nav" class="logo" uigs="search_logo"></a>
+        <ul class="searchnav" name="scroll-nav">
+            <li><a id="sogou_news" t=q href="http://news.sogou.com/news?ie=utf8&p=40230447&query=叔的刀法" onclick="navBar(this,'query=',true);" uigs="nav_xinwen">新闻</a></li>
+            <li><a id="sogou_leftall" t=q href="http://www.sogou.com/web?ie=utf8&query=叔的刀法" onclick="navBar(this,'query=',true);" uigs="nav_wangye">网页</a></li>
+            <li class="cur"><a href="javascript:void(0)">微信</a></li>
+            <li><a id="sogou_zhihu" t=q href="http://zhihu.sogou.com/zhihu?ie=utf8&p=73351201&query=叔的刀法" onclick="navBar(this,'query=',true)" uigs="nav_zhihu">知乎</a></li>
+            <li><a id="sogou_pic" t=q href="http://pic.sogou.com/pics?ie=utf8&p=40230504&query=叔的刀法" onclick="navBar(this,'query=',true)" uigs="nav_tupian">图片</a></li>
+            <li><a id="sogou_video" t=q href="http://v.sogou.com/v?ie=utf8&p=40230608&query=叔的刀法" onclick="navBar(this,'query=',true)" uigs="nav_shipin">视频</a></li>
+            <li><a id="sogou_mingyi" t=q href="http://mingyi.sogou.com/mingyi?query=叔的刀法&ie=utf8" onclick="navBar(this,'query=',true)" uigs="nav_mingyi">明医</a></li>
+            <li><a id="sogou_english" t=q href="http://english.sogou.com/english?query=叔的刀法&b_o_e=1&ie=utf8" onclick="navBar(this,'query=',true)" uigs="nav_yingwen">英文<span class="nav-new"></span></a></li>
+            <li><a id="sogou_maps" t=q href="http://scholar.sogou.com/xueshu?query=叔的刀法&ie=utf-8" onclick="navBar(this,'query=',true)" uigs="nav_xueshu">学术<span class="nav-new"></span></a></li>
+            <li><a id="top_more" href="http://www.sogou.com/docs/more.htm?v=1" target="_blank" uigs="nav_more">更多>></a></li>
+        </ul>
+        
+
+<form name="searchForm" action="/weixin">
+    <div class="querybox">
+        <div class="qborder">
+            <div class="qborder2">
+                <input type="hidden" name="type" value="1"/>
+                <input type="text" class="query" name="query" id="query" ov="叔的刀法" value="叔的刀法" autocomplete="off"/>
+                
+                    <input type="hidden" name="ie" value="utf8"/>
+                
+                <a href="javascript:void(0)" class="qreset2" name="reset" uigs="search_reset"></a>
+            </div>
+        </div>
+        <input type="button" value="搜文章" class="swz" onclick="search(this,2)"  uigs="search_article"/>
+        <input type="button" value="搜公众号" class="swz2"  onclick="search(this,1)" uigs="search_account"/>
+        <input type="hidden" name="_sug_" id="_sug_" value="n"/>
+        <input type="hidden" name="_sug_type_" id="_sug_type_" value=""/>
+    </div>
+</form>
+    </div>
+</div>
+<!--end header-->
+    <div class="wrapper" id="wrapper">
+        <div class="main-left" id="main">
+            
+<div class="dy-pop2 float" id="account_box" style="display: none"></div>
+<script type="text/template" id="account_tpl">
+    <i style="left:32px;"></i>
+    <div class="gzh-box">
+        <div class="img-box2">
+            <a target="_blank" href="${encGzhUrl}" uigs="main_toweixin_account_img">
+                <img width="58" height="58" src="${headimage}"/>
+            </a>
+        </div>
+        <div class="txt-box2">
+            <p class="gzh-name">
+                <a target="_blank" href="${encGzhUrl}" uigs="main_toweixin_account_name">${sourcename|cutLength,14}</a>
+                {@if isV == 1}<i></i>{@/if}
+            </p>
+            {@if username}<p class="gzh-num">微信号：${username}</p>{@/if}
+        </div>
+        <div class="fg">
+            <span>近一月发文<br/>${avgpublish}篇</span>
+            <span class="line2"></span>
+            <span>平均阅读数<br/>${avgread}</span>
+        </div>
+        <div class="dy-an"><a href="javascript:void(0)" uigs="main_toweixin_account_sub">订阅此公众号</a></div>
+    </div>
+</script>
+
+
+<div class="dy-pop2 dy-pop3 float" id="success_box" style="display: none"></div>
+<script type="text/template" id="success_tpl">
+    <div class="dingyue-pop">
+        <p class="dy-p1"><img src="/new/pc/images/ico_dy.gif" width="32" height="32"/>${typeName}成功</p>
+        <p class="dy-p2" style="text-align:center">在&nbsp;<a href="/home?stype=${typeNum}" target="_blank" uigs="other_float_home_${typeNum}">我的${typeName}</a>&nbsp;可查看所有${typeName}内容</p>
+    </div>
+</script>
+
+
+<div class="dy-pop2 dy-pop3 float" id="failure_box" style="display: none"></div>
+<script type="text/template" id="failure_tpl">
+    <div class="dingyue-pop">
+        <p class="dy-p1"><img src="/new/pc/images/ico_dy2.gif" width="32" height="32"/>${typeName}失败</p>
+        <p class="dy-p2" style="font-size:14px">${typeContent}</p>
+    </div>
+</script>
+
+
+<div class="dy-pop2 dy-pop4 float" id="cancel_box" style="display: none"></div>
+<script type="text/template" id="cancel_tpl">
+    <p class="p1">您确定要取消该${name}么？</p>
+    <p class="p2">
+        <a href="javascript:void(0)" class="cancel-yes" data-type="${type}" data-id="${id}" uigs="other_float_cancel_yes">确定</a>
+        <a href="javascript:void(0)" class="cancel-no" uigs="other_float_cancel_no">再想想</a>
+    </p>
+</script>
+
+
+<div class="dy-pop2 dy-pop5 float" id="share_box" style="display: none">
+    <a href="javascript:void(0)" class="close" data-except="1" uigs="other_float_share_close"></a>
+    <div class="fxico-box">
+        <a href="javascript:void(0)" class="sina" data-except="1" uigs="other_float_share_sina"></a>
+        <a href="javascript:void(0)" class="weixin" data-except="1" uigs="other_float_share_weixin"></a>
+        <a href="javascript:void(0)" class="zone" target="_blank" data-except="1" uigs="other_float_share_zone"></a>
+        <a href="javascript:void(0)" class="tieba" target="_blank" data-except="1" uigs="other_float_share_tieba"></a>
+        <a href="javascript:void(0)" class="tx" target="_blank" data-except="1" uigs="other_float_share_tx"></a>
+        <a href="javascript:void(0)" class="renren" target="_blank" data-except="1" uigs="other_float_share_renren"></a>
+        <a href="javascript:void(0)" class="douban" target="_blank" data-except="1" uigs="other_float_share_douban"></a>
+        <a href="javascript:void(0)" class="qq" target="_blank" data-except="1" uigs="other_float_share_qq"></a>
+    </div>
+</div>
+
+
+<div class="dy-pop2 dy-pop5 float" id="erweima_box" style="display: none"></div>
+<script type="text/template" id="erweima_tpl">
+    <a href="javascript:void(0)" class="close" data-except="1" uigs="other_float_weixin_close"></a>
+    <div class="fxico-box2">微信扫一扫关注<br/><img width="104" height="104" src="${imgsrc}"/></div>
+</script>
+            
+
+<script>
+    //高级工具参数对象
+    var toolParas = {
+        tsn : "0",
+        ft : "null",
+        et : "null",
+        interation : "null",
+        wxid : "",
+        usip : "null",
+        from : "null"
+    };
+</script>
+<div class="wx-topbox">
+    <div class="all-time">
+        <div class="all-time-y2 ">
+            <div class="all-time-y all-time-y-v1" id="text">
+                以下内容来自微信公众号
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<div class="news-box">
+    
+<ul class="news-list2">
+	
+		<!-- a -->
+		<li id="sogou_vr_11002301_box_0">
+<div class="gzh-box2">
+<div class="img-box">
+<a target="_blank" uigs="main_toweixin_account_image_0" href="http://mp.weixin.qq.com/profile?src=3&amp;timestamp=1480162057&amp;ver=1&amp;signature=ZGchYQvFBPtP19DC5IF7TNojjelRieAAH*UqY9XHSp1k82tG7NMwngK0RK8h5Zm81MjRN8SQeuGNb7ZFgaFrxQ=="><span></span><img src="http://img01.sogoucdn.com/app/a/100520090/oIWsFt29XG0pYIX1O_Ay1dCDkKPM" onload="resizeImage(this,58,58)" onerror="this.src=&quot;http://weixin.sogou.com/wechat/images/account/def56-56.png&quot;;this.onerror=null;"></a>
+</div>
+<div class="txt-box">
+<p class="tit">
+<a target="_blank" uigs="main_toweixin_account_name_0" href="http://mp.weixin.qq.com/profile?src=3&amp;timestamp=1480162057&amp;ver=1&amp;signature=ZGchYQvFBPtP19DC5IF7TNojjelRieAAH*UqY9XHSp1k82tG7NMwngK0RK8h5Zm81MjRN8SQeuGNb7ZFgaFrxQ=="><em><!--red_beg-->叔的刀法<!--red_end--></em></a>
+</p>
+<p class="info">微信号:
+                        <label name="em_weixinhao">lifang19680320</label><span class="line-s"></span>月发文7篇&nbsp;&nbsp;&nbsp;&nbsp;平均阅读17418</p>
+</div>
+<div class="ew-pop">
+<a class="code" href="javascript:void(0)"><img height="24" width="24" src="/new/pc/images/ico_ewm.png"></a><span style="display:none;" class="pop"><i></i>微信扫一扫关注<br>
+<img height="104" width="104" src="http://mp.weixin.qq.com/rr?src=3&amp;timestamp=1480162057&amp;ver=1&amp;signature=ww6mlv2B3Z8jT-9Tuj-Ntb9tVR96bA9VO2SX6BOxZ9r8oXcbGb7n6nqv-Cg9LVBF1hpXIFKt1RAYdq0H24QAjlX9LeRLijR*gxqfI39rl5s=" data-id="oIWsFt29XG0pYIX1O_Ay1dCDkKPM" onerror="qrcodeShowError('http://mp.weixin.qq.com/rr?src=3&amp;timestamp=1480162057&amp;ver=1&amp;signature=ww6mlv2B3Z8jT-9Tuj-Ntb9tVR96bA9VO2SX6BOxZ9r8oXcbGb7n6nqv-Cg9LVBF1hpXIFKt1RAYdq0H24QAjlX9LeRLijR*gxqfI39rl5s=',4,'oIWsFt29XG0pYIX1O_Ay1dCDkKPM')"><img height="32" width="32" class="shot-img" src="http://img01.sogoucdn.com/app/a/100520090/oIWsFt29XG0pYIX1O_Ay1dCDkKPM" onerror="this.src=&quot;http://weixin.sogou.com/wechat/images/account/def56-56.png&quot;;this.onerror=null;"></span>
+</div>
+<div class="dy-box">
+<a class="dy-btn" href="javascript:void(0)">订阅</a>
+</div>
+</div>
+<dl>
+<dt>功能介绍：</dt>
+<dd>评论和随笔</dd>
+</dl>
+<dl>
+<dt>最近文章：</dt>
+<dd>
+<a target="_blank" uigs="main_toweixin_account_article_0" id="sogou_vr_11002301_link_first_0" href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1480162057&amp;ver=1&amp;signature=oB6E6CSZQ*Xv7BQ96A*9lBtskgq6fxXMdoHqxu7*mlYMETyzxEmwUZLQkxgDm1FADVG6VMTxdZ1n0e0q7wdXrOi-3bV45eNN5NgZ-Ydja0iC6pHe8dEIyqaGlo7Js2AktbFuvIPzOqQ5HvrDDwvZEWxZTcZ9hqaOgT5FuIibcs0=">爸妈,欢迎回来</a><span><script>document.write(timeConvert('1480140609'))</script></span>
+</dd>
+</dl>
+</li>
+
+		<!-- z -->
+	
+</ul>
+    
+</div>
+
+
+        </div>
+        
+    </div>
+    <div class="back-top" style="display: none;"><a href="javascript:void(0);" uigs="other_float_back_top"></a></div>
+    
+    <div class="bottom-form">
+        
+
+<form name="searchForm" action="/weixin">
+    <div class="querybox">
+        <div class="qborder">
+            <div class="qborder2">
+                <input type="hidden" name="type" value="1"/>
+                <input type="text" class="query" name="query" id="query" ov="叔的刀法" value="叔的刀法" autocomplete="off"/>
+                
+                    <input type="hidden" name="ie" value="utf8"/>
+                
+                <a href="javascript:void(0)" class="qreset2" name="reset" uigs="search_reset"></a>
+            </div>
+        </div>
+        <input type="button" value="搜文章" class="swz" onclick="search(this,2)"  uigs="search_article"/>
+        <input type="button" value="搜公众号" class="swz2"  onclick="search(this,1)" uigs="search_account"/>
+        <input type="hidden" name="_sug_" id="_sug_" value="n"/>
+        <input type="hidden" name="_sug_type_" id="_sug_type_" value=""/>
+    </div>
+</form>
+    </div>
+
+<div class="footer-box" id="s_footer">
+    <div class="footer">
+        <a id="sogou_webhelp" href="http://help.sogou.com/" target="_blank" uigs="bottom_ssbz">搜索帮助</a>&nbsp;
+        <a href="http://fankui.help.sogou.com/index.php/web/web/index/type/4" target="_blank" uigs="bottom_yjfk">意见反馈</a>&nbsp;
+        <script src="/websearch/wexinurlenc_sogou_profile.jsp"></script>
+        &copy; 2016 SOGOU.COM
+        <a href="http://www.sogou.com/docs/terms.htm" target="_blank" class="g" uigs="bottom_mzsm">免责声明</a>
+    </div>
+</div>
+    
+    <script>var WX_SUGG_PAGE_FROM="pcGzhSearch"</script>
+    
+        <script src="/new/pc/js/account.min.js?v=20161107"></script>
+    
+    <script src="/new/pc/js/event.min.js?v=20161107"></script>
+    <script src="/new/pc/js/form.min.js?v=20161107"></script>
+    <script src="/new/pc/js/search.min.js?v=20161107"></script>
+    <script src="/new/pc/js/suggestion.min.js?v=20161107"></script>
+    <script type="text/javascript">
+        var uigs_para = {
+            "uigs_productid": "weixin",
+            "uigs_cookie"   : "SUID,sct",
+            "uuid"          : "a6156ac6-23be-42db-87c3-648b1f97a06d",
+            "query"         : "叔的刀法",
+            "weixintype"    : "1",
+            "exp_status"    : "-1",
+            "exp_id"        : "null_0-",
+            "exp_id_list"   : "0_0",
+            "pagetype"      : "result",
+            "wuid"          : getCookie("wuid"),
+            "noresult"      : 0
+        };
+    </script>
+    
+    <script src="/new/pc/js/uigs.min.js?v=20161107"></script>
+    <script src="/new/pc/js/log.min.js?v=20161107"></script>
+</body>
+</html>
+<!--1480162057281-->
+<!--zly--><!--weixin-->

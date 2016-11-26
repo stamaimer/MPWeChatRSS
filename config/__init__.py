@@ -18,7 +18,9 @@ class Config(object):
 
     PORT = 5000
 
-    SECRET_KEY = "MPWeChatRSS"
+    SQLALCHEMY_ECHO = 1
+
+    SQLALCHEMY_TRACK_MODIFICATIONS = 1
 
 
 from development import DevelopmentConfig

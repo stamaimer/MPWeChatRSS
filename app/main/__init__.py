@@ -10,7 +10,13 @@
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from app.api import get_account
+
 from app.form import MPWeChatForm
+
+from app.model import db
+from app.model.account import Account
+from app.model.article import Article
 
 
 main = Blueprint("main", __name__)
@@ -31,13 +37,28 @@ def insert_mp_wechat():
 
     if mp_wechat_form.validate():
 
-        flash(mp_wechat_form.mp_wechat.data)
+        query = mp_wechat_form.query.data
+
+        account = Account.query.filter((Account.name == query) | (Account.text == query)).first()
+
+        if not account:
+
+            new_account = get_account(query)
+
+            db.session.add(new_account)
+
+            db.session.commit()
+
+            flash(query + u"已添加")
+
+        else:
+
+            flash(query + u"已存在")
 
     else:
 
         flash(u"出错啦！")
 
+    # return rss url
+
     return redirect(url_for("main.index"))
-
-
-def

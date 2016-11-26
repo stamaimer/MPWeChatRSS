@@ -13,5 +13,5 @@ from wtforms import Form, StringField, validators
 
 class MPWeChatForm(Form):
 
-    mp_wechat = StringField(u"微信公众号：")
+    query = StringField(u"微信公众号：")
 
