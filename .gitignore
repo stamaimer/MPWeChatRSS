@@ -4,3 +4,4 @@ instance
 venv
 .DS_Store
 *.pyc
+test.html
