@@ -25,10 +25,9 @@
         <input type="submit" value="提交">
     </form>
 
-
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul class=flashes>
+        <ul class="flashes">
             {% for message in messages %}
             <li>{{ message }}</li>
             {% endfor %}

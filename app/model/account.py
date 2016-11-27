@@ -26,6 +26,10 @@ class Account(db.Model):
 
     auth = db.Column(db.String(), unique=0, nullable=1)
 
+    feed = db.relationship("Feed", backref="account", uselist=0)
+
+    articles = db.relationship("Article", backref="account", lazy="dynamic")
+
     def __init__(self, name="", text="", info="", auth=""):
 
         self.name = name

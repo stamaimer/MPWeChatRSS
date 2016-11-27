@@ -26,7 +26,9 @@ class Article(db.Model):
 
     content = db.Column(db.String(), unique=1, nullable=0)
 
-    def __init__(self, title="", cover="", digest="", content=""):
+    account_id = db.Column(db.Integer(), db.ForeignKey("accounts.id"))
+
+    def __init__(self, title="", cover="", digest="", content="", account=None):
 
         self.title = title
 
@@ -35,6 +37,8 @@ class Article(db.Model):
         self.digest = digest
 
         self.content = content
+
+        self.account = account
 
     def __repr__(self):
 
@@ -53,5 +57,7 @@ class Article(db.Model):
         article["digest"] = self.digest
 
         article["content"] = self.content
+
+        article["account"] = self.account
 
         return article

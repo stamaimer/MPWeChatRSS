@@ -8,15 +8,15 @@
 
 """
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+import requests
+import requests_cache
 
-from app.api import get_account
+from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
+
+from app.api import get_account, gen_feed, retrieve
 
 from app.form import MPWeChatForm
-
-from app.model import db
 from app.model.account import Account
-from app.model.article import Article
 
 
 main = Blueprint("main", __name__)
@@ -43,22 +43,41 @@ def insert_mp_wechat():
 
         if not account:
 
-            new_account = get_account(query)
+            account = get_account(query)
 
-            db.session.add(new_account)
+            feed = gen_feed(account)
 
-            db.session.commit()
-
-            flash(query + u"已添加")
+            flash(query + u"已添加！订阅地址：" + feed.url)
 
         else:
 
-            flash(query + u"已存在")
+            feed_url = account.feed.url
+
+            flash(query + u"已存在！订阅地址：" + feed_url)
 
     else:
 
         flash(u"出错啦！")
 
-    # return rss url
-
     return redirect(url_for("main.index"))
+
+
+@main.route("/a2link")
+def a2link():
+
+    url = request.args.get("url", "")
+
+    if url:
+
+        headers = dict()
+
+        headers["referer"] = "http://weixin.sogou.com"
+
+        response = retrieve(url, headers)
+
+        return send_file(response.raw)
+
+    else:
+
+        return None
+
