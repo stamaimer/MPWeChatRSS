@@ -8,8 +8,8 @@
     <title>MPWeChatRSS</title>
 
     <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
+    <!--<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -51,6 +51,16 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div id="footer" class="container" style="height: 50px; line-height: 50px; text-align: center;">
+        <span id="footer">
+          Made with <span class="glyphicon glyphicon-heart" aria-hidden="true" style="color:red"></span> by
+            <a href="http://stamaimer.github.io">stamaimer</a>.
+          Proudly hosted by <a href="https://m.do.co/c/a3c5678ef5ee">DigitalOcean</a>.
+        </span>
+      </div>
+    </nav>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
