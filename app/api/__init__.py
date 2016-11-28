@@ -91,7 +91,7 @@ def get_account(query):
 
     string = retrieve(SEARCH_URL.format(query.encode("utf-8")))
 
-    string = string.replace("<em>", '').replace("</em>", '')
+    string = string.replace("<em>", '').replace("</em>", '').replace("<!--red_beg-->", '').replace("<!--red_end-->", '')
 
     name = extract_element(string, ACCOUNT_NAME_XPATH)
 
@@ -102,6 +102,10 @@ def get_account(query):
     auth = extract_element(string, ACCOUNT_AUTH_XPATH)
 
     print name, text, info, auth
+
+    if isinstance(info, list):
+
+        info = ""
 
     if isinstance(auth, list):
 

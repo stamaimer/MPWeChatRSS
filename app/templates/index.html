@@ -17,21 +17,38 @@
       <script src="{{ url_for('static', filename='js/respond.min.js') }}"></script>
     <![endif]-->
   </head>
-  <body>
+  <body class="container">
 
-    <form method="post", action="/">
+    <div class="page-header">
+      <h1>MPWeChatRSS <small>微信公众号输出到RSS</small></h1>
+    </div>
+
+    <ul class="list-group">
+        {% if feeds %}
+            {% for feed in feeds %}
+            <li class="list-group-item">{{ feed.account }}: {{ feed.url }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    <form method="post" action="/" class="form-inline">
         {{ mp_wechat_form.csrf_token }}
-        {{ mp_wechat_form.query.label }}{{ mp_wechat_form.query(size=20) }}
-        <input type="submit" value="提交">
+        <div class="form-group">
+            {{ mp_wechat_form.query.label(class_="sr-only control-label") }}{{ mp_wechat_form.query(size=20, class_="form-control", placeholder="微信公众号") }}
+        </div>
+        <!--<input type="submit" value="提交">-->
+        <button type="submit" class="btn btn-default">提交</button>
+        <span class="help-block">请确保你输入的微信公众号在搜狗微信搜索时，第一个搜索结果就是你所需要的。</span>
     </form>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul class="flashes">
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{ message }}
+            </div>
             {% endfor %}
-        </ul>
         {% endif %}
     {% endwith %}
 

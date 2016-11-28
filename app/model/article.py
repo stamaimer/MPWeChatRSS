@@ -20,7 +20,7 @@ class Article(db.Model):
 
     title = db.Column(db.String(), unique=1, nullable=0)
 
-    cover = db.Column(db.String(), unique=1, nullable=0)
+    cover = db.Column(db.String(), unique=0, nullable=0)
 
     digest = db.Column(db.String(), unique=1, nullable=0)
 

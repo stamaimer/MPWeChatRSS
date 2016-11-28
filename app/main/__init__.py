@@ -15,6 +15,8 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fil
 from app.api import get_account, gen_feed, retrieve
 
 from app.form import MPWeChatForm
+
+from app.model.feed import Feed
 from app.model.account import Account
 
 
@@ -26,7 +28,9 @@ def index():
 
     mp_wechat_form = MPWeChatForm()
 
-    return render_template("index.html", mp_wechat_form=mp_wechat_form)
+    feeds = Feed.query.all()
+
+    return render_template("index.html", mp_wechat_form=mp_wechat_form, feeds=feeds)
 
 
 @main.route('/', methods=["POST"])
