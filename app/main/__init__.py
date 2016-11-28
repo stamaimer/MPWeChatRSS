@@ -8,7 +8,9 @@
 
 """
 
-from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
+import os
+
+from flask import Blueprint, flash, redirect, render_template, request, send_file, send_from_directory, url_for
 
 from app.api import get_account, gen_feed, retrieve
 
@@ -82,3 +84,8 @@ def a2link():
 
         return "", 204
 
+
+@main.route("/feed/<name>")
+def feed(name):
+
+    return send_from_directory(os.getcwd() + "/app/static/feeds", name + ".xml")

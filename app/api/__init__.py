@@ -19,6 +19,8 @@ from lxml import html
 from urllib import unquote
 from selenium import webdriver
 from pyquery import PyQuery as pq
+from datetime import datetime
+from werkzeug.contrib.atom import AtomFeed, FeedEntry
 
 from flask import url_for
 
@@ -112,6 +114,31 @@ def get_account(query):
     return account
 
 
+def get_content(item):
+
+    url = HOST + item["content_url"].replace("&amp;", '&')
+
+    string = retrieve(url)
+
+    with open(os.getcwd() + "/app/static/articles/" + item["title"] + ".html", 'w') as temp:
+
+        content = pq(string.replace("data-src", "src"))
+
+        for image in content.items("img"):
+
+            if image.attr.src:
+
+                image.attr.src = unquote(url_for("main.a2link", url=image.attr.src, _external=1))
+
+        for selector in [".rich_media_area_extra", "#js_sponsor_ad_area", "#js_toobar3", "#js_sg_bar", "#sg_tj"]:
+
+            content(selector).text("")
+
+        temp.write(content.html().encode("utf-8"))
+
+    return content.html()
+
+
 def get_articles(url):
 
     string = retrieve(url)
@@ -122,21 +149,9 @@ def get_articles(url):
 
         item = item["app_msg_ext_info"]
 
-        url = HOST + item["content_url"].replace("&amp;", '&')
+        item["content"] = get_content(item)
 
-        string = retrieve(url)
-
-        with open(os.getcwd() + "/app/static/articles/" + item["title"] + ".html", 'w') as temp:
-
-            content = pq(string.replace("data-src", "src"))
-
-            for image in content.items("img"):
-
-                if image.attr.src:
-
-                    image.attr.src = unquote(url_for("main.a2link", url=image.attr.src, _external=1))
-
-            temp.write(content.html().encode("utf-8"))
+        yield item
 
 
 def gen_feed(account):
@@ -145,11 +160,23 @@ def gen_feed(account):
 
     url = extract_element(string, ACCOUNT_BASE_XPATH + "//p/a/@href")
 
-    # print url
+    atom = AtomFeed(account.text, feed_url=url_for("main.feed", name=account.name, _external=1), author=account.auth)
 
     articles = get_articles(url)
 
-    feed = Feed(url, account)
+    for item in articles:
+
+        article = Article(item["title"], item["cover"], item["digest"], item["content"], account)
+
+        atom.add(FeedEntry(article.title, article.content, url=article.cover, updated=datetime.now()))
+
+        db.session.add(article)
+
+    with open(os.getcwd() + "/app/static/feeds/" + account.name + ".xml", 'w') as temp:
+
+        temp.write(atom.to_string().encode("utf-8"))
+
+    feed = Feed(atom.feed_url, account)
 
     db.session.add(feed)
 
