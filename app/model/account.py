@@ -26,9 +26,9 @@ class Account(db.Model):
 
     auth = db.Column(db.String(), unique=0, nullable=1)
 
-    feed = db.relationship("Feed", backref="account", uselist=0)
+    feed = db.relationship("Feed", cascade="all, delete", backref="account", uselist=0)
 
-    articles = db.relationship("Article", backref="account", lazy="dynamic")
+    articles = db.relationship("Article", cascade="all,delete", backref="account", lazy="dynamic")
 
     def __init__(self, name="", text="", info="", auth=""):
 

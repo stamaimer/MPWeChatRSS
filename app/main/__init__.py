@@ -8,9 +8,6 @@
 
 """
 
-import requests
-import requests_cache
-
 from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
 
 from app.api import get_account, gen_feed, retrieve
@@ -73,11 +70,15 @@ def a2link():
 
         headers["referer"] = "http://weixin.sogou.com"
 
-        response = retrieve(url, headers)
+        magic_link = "http://img02.store.sogou.com/net/a/05/link?appid=100520091&url="
+
+        response = retrieve(magic_link + url, headers)
 
         return send_file(response.raw)
 
     else:
 
-        return None
+        print "Empty URL"
+
+        return "", 204
 
