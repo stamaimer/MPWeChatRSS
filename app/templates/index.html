@@ -23,13 +23,7 @@
       <h1>MPWeChatRSS <small>微信公众号输出到RSS</small></h1>
     </div>
 
-    <ul class="list-group">
-        {% if feeds %}
-            {% for feed in feeds %}
-            <li class="list-group-item">{{ feed.account }}: {{ feed.url }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+
 
     <form method="post" action="/" class="form-inline">
         {{ mp_wechat_form.csrf_token }}
@@ -51,6 +45,14 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+    <ul class="list-group">
+    {% if feeds %}
+        {% for feed in feeds %}
+        <li class="list-group-item">{{ feed.account }}: {{ feed.url }}</li>
+        {% endfor %}
+    {% endif %}
+    </ul>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div id="footer" class="container" style="height: 50px; line-height: 50px; text-align: center;">

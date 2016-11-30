@@ -9,6 +9,9 @@
 """
 
 import os
+import time
+
+from urlparse import urlparse, parse_qs
 
 from flask import Blueprint, flash, redirect, render_template, request, send_file, send_from_directory, url_for
 
@@ -72,6 +75,8 @@ def a2link():
 
     if url:
 
+        image_type = parse_qs(urlparse(url).query).get("wx_fmt", [""])[0]
+
         headers = dict()
 
         headers["referer"] = "http://weixin.sogou.com"
@@ -80,7 +85,11 @@ def a2link():
 
         response = retrieve(magic_link + url, headers)
 
-        return send_file(response.raw)
+        # with open(os.getcwd() + "/app/static/images/" + str(time.time()) + "." + image_type, 'w') as temp:
+        #
+        #     temp.write(response.content)
+
+        return response.content, {"content-type": "image/" + image_type}
 
     else:
 

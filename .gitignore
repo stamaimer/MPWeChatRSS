@@ -10,3 +10,4 @@ referer.py
 db.sqlite
 app/static/articles
 app/static/feeds/*.xml
+app/static/images

@@ -12,17 +12,17 @@
 import os
 import re
 import json
+import random
 import requests
 import requests_cache
 
 from lxml import html
 from urllib import unquote
-from selenium import webdriver
 from pyquery import PyQuery as pq
 from datetime import datetime
 from werkzeug.contrib.atom import AtomFeed, FeedEntry
 
-from flask import url_for
+from flask import current_app, url_for
 
 from app.model import db
 from app.model.feed import Feed
@@ -33,8 +33,6 @@ from app.model.article import Article
 requests_cache.install_cache(expire_after=3600)
 
 HOST = "http://mp.weixin.qq.com"
-
-# BROWSER = webdriver.Firefox()
 
 SEARCH_URL = "http://weixin.sogou.com/weixin?type=1&query={}"
 
@@ -55,7 +53,7 @@ def retrieve(url, headers=None):
 
         headers = dict()
 
-    headers["user-agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"
+    headers["user-agent"] = current_app.config["USER_AGENTS"][random.randint(0, 9500)]
 
     response = requests.get(url, headers=headers)
 
@@ -140,7 +138,7 @@ def get_content(item):
 
         temp.write(content.html().encode("utf-8"))
 
-    return content.html()
+    return content("#js_content").html()
 
 
 def get_articles(url):
