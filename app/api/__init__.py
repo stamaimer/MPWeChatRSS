@@ -12,7 +12,6 @@
 import os
 import re
 import json
-import random
 import requests
 import requests_cache
 
@@ -20,9 +19,10 @@ from lxml import html
 from urllib import unquote
 from pyquery import PyQuery as pq
 from datetime import datetime
+from fake_useragent import UserAgent
 from werkzeug.contrib.atom import AtomFeed, FeedEntry
 
-from flask import current_app, url_for
+from flask import url_for
 
 from app.model import db
 from app.model.feed import Feed
@@ -53,7 +53,9 @@ def retrieve(url, headers=None):
 
         headers = dict()
 
-    headers["user-agent"] = current_app.config["USER_AGENTS"][random.randint(0, 9500)]
+    headers["user-agent"] = UserAgent().random
+
+    print headers, url
 
     response = requests.get(url, headers=headers)
 
