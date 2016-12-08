@@ -15,8 +15,8 @@ CELERYBEAT_SCHEDULE = \
 {
     'poll':
     {
-        'task': 'task.poll',
-        'schedule': timedelta(hours=12),
+        'task': 'celary.task.poll',
+        'schedule': timedelta(hours=1),
         'args': ()
     },
 }

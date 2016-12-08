@@ -17,7 +17,7 @@ def create_celery(app):
 
     celery = Celery(app.import_name, broker="amqp://guest:guest@localhost:5672//", backend="rpc://", include=["celary.task"])
 
-    celery.config_from_object("config")
+    celery.config_from_object("celary.config")
 
     TaskBase = celery.Task
 
