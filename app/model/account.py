@@ -18,13 +18,13 @@ class Account(db.Model):
 
     id = db.Column(db.Integer(), primary_key=1)
 
-    name = db.Column(db.String(), unique=1, nullable=0)
+    name = db.Column(db.String(255), unique=1, nullable=0)
 
-    text = db.Column(db.String(), unique=1, nullable=0)
+    text = db.Column(db.String(255), unique=1, nullable=0)
 
-    info = db.Column(db.String(), unique=0, nullable=0)
+    info = db.Column(db.String(255), unique=0, nullable=0)
 
-    auth = db.Column(db.String(), unique=0, nullable=1)
+    auth = db.Column(db.String(255), unique=0, nullable=1)
 
     feed = db.relationship("Feed", cascade="all, delete", backref="account", uselist=0)
 

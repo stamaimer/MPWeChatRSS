@@ -12,6 +12,7 @@
 import os
 import re
 import json
+import time
 import requests
 import requests_cache
 
@@ -20,6 +21,7 @@ from urllib import unquote
 from pyquery import PyQuery as pq
 from datetime import datetime
 from fake_useragent import UserAgent
+from sqlalchemy.exc import IntegrityError
 from werkzeug.contrib.atom import AtomFeed, FeedEntry
 
 from flask import url_for
@@ -55,7 +57,7 @@ def retrieve(url, headers=None):
 
     headers["user-agent"] = UserAgent().random
 
-    print headers, url
+    # print headers, url
 
     response = requests.get(url, headers=headers)
 
@@ -147,7 +149,23 @@ def get_articles(url):
 
     string = retrieve(url)
 
-    source = re.search("msgList = (.*);", string).group(1)
+    source = ""
+
+    try:
+
+        source = re.search("msgList = (.*);", string).group(1)
+
+    except AttributeError:
+
+        ver_url = "http://mp.weixin.qq.com/mp/verifycode?cert={timestamp}".format(timestamp=time.time())
+
+        headers = dict()
+
+        headers["referer"] = url
+
+        response = retrieve(ver_url, headers=headers)
+
+        print response.content
 
     for item in json.loads(source)["list"]:
 
@@ -174,7 +192,13 @@ def gen_feed(account):
 
         atom.add(FeedEntry(article.title, article.content, url=article.cover, updated=datetime.now()))
 
-        db.session.add(article)
+        try:
+
+            db.session.merge(article)
+
+        except IntegrityError:
+
+            db.session.rollback()
 
     with open(os.getcwd() + "/app/static/feeds/" + account.name + ".xml", 'w') as temp:
 
@@ -182,6 +206,12 @@ def gen_feed(account):
 
     feed = Feed(atom.feed_url, account)
 
-    db.session.add(feed)
+    try:
+
+        db.session.merge(feed)
+
+    except IntegrityError:
+
+        db.session.rollback()
 
     return feed

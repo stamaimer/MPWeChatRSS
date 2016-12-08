@@ -9,7 +9,7 @@
 
 """
 
-from app import create_app
+from run import app
 from celery import Celery
 
 
@@ -35,7 +35,7 @@ def create_celery(app):
 
     return celery
 
-celery = create_celery(create_app("config.DevelopmentConfig"))
+celery = create_celery(app)
 
 if __name__ == '__main__':
 

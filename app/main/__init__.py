@@ -9,11 +9,10 @@
 """
 
 import os
-import time
 
 from urlparse import urlparse, parse_qs
 
-from flask import Blueprint, flash, redirect, render_template, request, send_file, send_from_directory, url_for
+from flask import Blueprint, flash, redirect, render_template, request, send_from_directory, url_for
 
 from app.api import get_account, gen_feed, retrieve
 

@@ -18,7 +18,7 @@ class Feed(db.Model):
 
     id = db.Column(db.Integer(), primary_key=1)
 
-    url = db.Column(db.String(), unique=1, nullable=0)
+    url = db.Column(db.String(255), unique=1)
 
     account_id = db.Column(db.Integer(), db.ForeignKey("accounts.id"))
 

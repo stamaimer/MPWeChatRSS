@@ -18,13 +18,13 @@ class Article(db.Model):
 
     id = db.Column(db.Integer(), primary_key=1)
 
-    title = db.Column(db.String(), unique=1, nullable=0)
+    title = db.Column(db.String(255), unique=1)
 
-    cover = db.Column(db.String(), unique=0, nullable=0)
+    cover = db.Column(db.String(255))
 
-    digest = db.Column(db.String(), unique=1, nullable=0)
+    digest = db.Column(db.String(255))
 
-    content = db.Column(db.String(), unique=1, nullable=0)
+    content = db.Column(db.Text())
 
     account_id = db.Column(db.Integer(), db.ForeignKey("accounts.id"))
 
