@@ -2,8 +2,8 @@
 
 """
 
-    MPWeChatRSS.celery.tasks
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    MPWeChatRSS.celery.task
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     stamaimer 12/07/16
 

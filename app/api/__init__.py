@@ -13,6 +13,7 @@ import os
 import re
 import json
 import time
+import inspect
 import requests
 import requests_cache
 
@@ -32,7 +33,7 @@ from app.model.account import Account
 from app.model.article import Article
 
 
-requests_cache.install_cache(expire_after=3600)
+requests_cache.install_cache(expire_after=5)
 
 HOST = "http://mp.weixin.qq.com"
 
@@ -49,7 +50,28 @@ ACCOUNT_INFO_XPATH = ACCOUNT_BASE_XPATH + "//dl[1]/dd/text()"
 ACCOUNT_AUTH_XPATH = ACCOUNT_BASE_XPATH + "//dl[2]/dd/text()"
 
 
+def get_proxies():
+
+    url = ""
+
+    response = requests.get(url)
+
+    if response.ok:
+
+        proxies = dict(http="http://" + response.text)
+
+    else:
+
+        proxies = dict()
+
+    print(proxies)
+
+    return proxies
+
+
 def retrieve(url, headers=None):
+
+    print(inspect.stack()[1][3])
 
     if not headers:
 
@@ -57,9 +79,9 @@ def retrieve(url, headers=None):
 
     headers["user-agent"] = UserAgent().random
 
-    # print headers, url
+    print url
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, proxies=get_proxies())
 
     if "referer" in headers:
 
@@ -147,25 +169,35 @@ def get_content(item):
 
 def get_articles(url):
 
-    string = retrieve(url)
-
     source = ""
 
-    try:
+    while 1:
 
-        source = re.search("msgList = (.*);", string).group(1)
+        string = retrieve(url)
 
-    except AttributeError:
+        try:
 
-        ver_url = "http://mp.weixin.qq.com/mp/verifycode?cert={timestamp}".format(timestamp=time.time())
+            source = re.search("msgList = (.*);", string).group(1)
 
-        headers = dict()
+        except AttributeError:
 
-        headers["referer"] = url
+            # ver_url = "http://mp.weixin.qq.com/mp/verifycode?cert={timestamp}".format(timestamp=time.time())
+            #
+            # headers = dict()
+            #
+            # headers["referer"] = url
+            #
+            # response = retrieve(ver_url, headers=headers)
 
-        response = retrieve(ver_url, headers=headers)
+            print "请输入验证码"
 
-        print response.content
+            time.sleep(5)
+
+            requests_cache.clear()
+
+            continue
+
+        break
 
     for item in json.loads(source)["list"]:
 

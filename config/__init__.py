@@ -20,7 +20,7 @@ class Config(object):
 
     SERVER_NAME = "127.0.0.1:5000"
 
-    SQLALCHEMY_ECHO = 1
+    SQLALCHEMY_ECHO = 0
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = 1
 
