@@ -16,11 +16,13 @@ from celary import celery
 
 import requests
 
+INFORM_URL = "http://sc.ftqq.com/SCU436T08f5357b0dafad0249283e67c3b4e71f55f677ffe2b28.send"
+
 
 @celery.task
 def poll():
 
-    payload = dict(title=u"抓取通知")
+    payload = dict(text="MPWeChatRSS", desp="Finished")
 
     try:
 
@@ -34,3 +36,6 @@ def poll():
 
         payload["desp"] = e.message
 
+    response = requests.post(INFORM_URL, data=payload)
+
+    print response.status_code, response.reason

@@ -99,7 +99,7 @@ def retrieve(url, headers=None):
 
             return string
 
-        except requests.ProxyError:
+        except requests.exceptions.ProxyError:
 
             continue
 
