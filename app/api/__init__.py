@@ -52,7 +52,7 @@ ACCOUNT_AUTH_XPATH = ACCOUNT_BASE_XPATH + "//dl[2]/dd/text()"
 
 def get_proxies():
 
-    url = "http://s.zdaye.com/?api=201612191538359188&count=1&fitter=1&px=1"
+    url = ""
 
     response = requests.get(url)
 
