@@ -14,6 +14,8 @@ from urlparse import urlparse, parse_qs
 
 from flask import Blueprint, flash, redirect, render_template, request, send_from_directory, url_for
 
+from flask_security import login_required
+
 from app.api import get_account, gen_feed, retrieve
 
 from app.form import MPWeChatForm
@@ -26,6 +28,7 @@ main = Blueprint("main", __name__)
 
 
 @main.route('/', methods=["GET"])
+@login_required
 def index():
 
     mp_wechat_form = MPWeChatForm()

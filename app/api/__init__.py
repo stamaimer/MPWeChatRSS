@@ -25,7 +25,7 @@ from fake_useragent import UserAgent
 from sqlalchemy.exc import IntegrityError
 from werkzeug.contrib.atom import AtomFeed, FeedEntry
 
-from flask import url_for
+from flask import current_app, url_for
 
 from app.model import db
 from app.model.feed import Feed
@@ -52,11 +52,11 @@ ACCOUNT_AUTH_XPATH = ACCOUNT_BASE_XPATH + "//dl[2]/dd/text()"
 
 def get_proxies():
 
-    url = ""
+    url = "http://s.zdaye.com/?api=201612191538359188&count=1&fitter=1&px=1"
 
     response = requests.get(url)
 
-    if response.ok:
+    if response.ok and ":" in response.text:
 
         proxies = dict(http="http://" + response.text)
 
@@ -64,14 +64,14 @@ def get_proxies():
 
         proxies = dict()
 
-    print(proxies)
+    current_app.logger.debug(proxies)
 
     return proxies
 
 
 def retrieve(url, headers=None):
 
-    print(inspect.stack()[1][3])
+    current_app.logger.debug(inspect.stack()[1][3])
 
     if not headers:
 
@@ -79,21 +79,29 @@ def retrieve(url, headers=None):
 
     headers["user-agent"] = UserAgent().random
 
-    print url
+    current_app.logger.debug(url)
 
-    response = requests.get(url, headers=headers, proxies=get_proxies())
+    while 1:
 
-    if "referer" in headers:
+        try:
 
-        return response
+            response = requests.get(url, headers=headers, proxies=get_proxies())
 
-    string = response.text
+            if "referer" in headers:
 
-    with open("test.html", "w") as temp:
+                return response
 
-        temp.write(string.encode("utf-8"))
+            string = response.text
 
-    return string
+            with open("test.html", "w") as temp:
+
+                temp.write(string.encode("utf-8"))
+
+            return string
+
+        except requests.ProxyError:
+
+            continue
 
 
 def extract_element(string, xpath):
@@ -125,7 +133,10 @@ def get_account(query):
 
     auth = extract_element(string, ACCOUNT_AUTH_XPATH)
 
-    print name, text, info, auth
+    # current_app.logger.debug("{name} {text} {info} {auth}".format(name=name.encode("utf-8"),
+    #                                                               text=text.encode("utf-8"),
+    #                                                               info=info.encode("utf-8"),
+    #                                                               auth=auth.encode("utf-8")))
 
     if isinstance(info, list):
 
@@ -138,6 +149,8 @@ def get_account(query):
     account = Account(name, text, info, auth)
 
     db.session.add(account)
+
+    db.session.commit()
 
     return account
 
@@ -189,7 +202,7 @@ def get_articles(url):
             #
             # response = retrieve(ver_url, headers=headers)
 
-            print "请输入验证码"
+            current_app.logger.critical(u"请输入验证码")
 
             time.sleep(5)
 
@@ -228,6 +241,8 @@ def gen_feed(account):
 
             db.session.merge(article)
 
+            db.session.commit()
+
         except IntegrityError:
 
             db.session.rollback()
@@ -241,6 +256,8 @@ def gen_feed(account):
     try:
 
         db.session.merge(feed)
+
+        db.session.commit()
 
     except IntegrityError:
 
