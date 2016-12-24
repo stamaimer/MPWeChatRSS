@@ -16,7 +16,7 @@ from celary import celery
 
 import requests
 
-INFORM_URL = "http://sc.ftqq.com/SCU436T08f5357b0dafad0249283e67c3b4e71f55f677ffe2b28.send"
+INFORM_URL = ""
 
 
 @celery.task

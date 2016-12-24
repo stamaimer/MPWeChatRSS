@@ -85,7 +85,7 @@ def retrieve(url, headers=None):
 
         try:
 
-            response = requests.get(url, headers=headers, proxies=get_proxies())
+            response = requests.get(url, headers=headers, proxies=get_proxies(), timeout=3)
 
             if "referer" in headers:
 
