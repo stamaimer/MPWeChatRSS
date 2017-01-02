@@ -99,7 +99,15 @@ def retrieve(url, headers=None):
 
             return string
 
+        except requests.exceptions.Timeout:
+
+            continue
+
         except requests.exceptions.ProxyError:
+
+            continue
+
+        except requests.exceptions.ConnectionError:
 
             continue
 
@@ -177,7 +185,13 @@ def get_content(item):
 
         temp.write(content.html().encode("utf-8"))
 
-    return content("#js_content").html()
+    url = url.replace("/s?", "/mp/getcomment?")
+
+    read_num = retrieve(url)
+
+    current_app.logger.info(read_num)
+
+    return content("#js_content").html(), content("#post-date").html()
 
 
 def get_articles(url):
@@ -226,6 +240,18 @@ def gen_feed(account):
     string = retrieve(SEARCH_URL.format(account.name))
 
     url = extract_element(string, ACCOUNT_BASE_XPATH + "//p/a/@href")
+
+    current_app.logger.info(url)
+
+    while not url:
+
+        requests_cache.clear()
+
+        string = retrieve(SEARCH_URL.format(account.name))
+
+        url = extract_element(string, ACCOUNT_BASE_XPATH + "//p/a/@href")
+
+        current_app.logger.info(url)
 
     atom = AtomFeed(account.text, feed_url=url_for("main.feed", name=account.name, _external=1), author=account.auth)
 
