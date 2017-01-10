@@ -27,7 +27,7 @@ def poll():
 
     payload = dict(text="MPWeChatRSS", desp="Finished")
 
-    bind_url = "http://s.zdaye.com/StApiEditIP.html?u=longhornxp1&p=KC8E4A223F5D6A09&api=201612191538359188"
+    bind_url = ""
 
     response = requests.get(bind_url)
 
