@@ -9,7 +9,9 @@
 
 """
 
+
 from flask_security import RoleMixin
+
 from app.model import db
 
 

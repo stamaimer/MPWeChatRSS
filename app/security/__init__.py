@@ -9,12 +9,14 @@
 
 """
 
+
 from flask_security import Security, SQLAlchemyUserDatastore
 
 from app.model import db
 
 from app.model.role import Role
 from app.model.user import User
+
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 

@@ -2,13 +2,7 @@
 
 1. create virtual environment
 
-    - virtualenv venv -p python2.7
-
-    - source venv/bin/activate
-
-    - pip install --upgrade pip
-
-    - pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host=pypi.douban.com
+    - ./create_venv.sh
     
 2. create mysql database named `mpwechatrss` with utf-8 encoding
 

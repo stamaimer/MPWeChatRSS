@@ -20,7 +20,13 @@ class Config(object):
 
     SERVER_NAME = "127.0.0.1:5000"
 
+    CACHE_TYPE = "simple"
+
     SQLALCHEMY_ECHO = 0
+
+    SQLALCHEMY_POOL_SIZE = 20
+
+    SQLALCHEMY_POOL_RECYCLE = 10
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = 0
 

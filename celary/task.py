@@ -9,15 +9,17 @@
 
 """
 
+
 from app.model.account import Account
-from app.api import gen_feed
+from app.model.article import Article
+from app.api import bind_ip, gen_feed
 
 from celary import celery
 
 import traceback
 import requests
 import logging
-import sys
+
 
 INFORM_URL = ""
 
@@ -27,13 +29,9 @@ def poll():
 
     payload = dict(text="MPWeChatRSS", desp="Finished")
 
-    bind_url = ""
-
-    response = requests.get(bind_url)
-
-    logging.info("Bind Status: " + response.content.upper())
-
     accounts = Account.query.all()
+
+    bind_ip()
 
     for account in accounts:
 
@@ -45,10 +43,14 @@ def poll():
 
             traceback.print_exc()
 
-            payload["desp"] += "\n\n" + account.name + "\n\n" + traceback.format_exc() + "\n\n" # e.message + str(sys.exc_info()[-1].tb_lineno)
+            payload["desp"] += "\n\n\n\n" + account.name + "\n\n" + traceback.format_exc() + "\n\n"
 
             continue
 
+    article_counts = Article.query.count()
+
+    payload["desp"] += "\n\n" + "aritcle counts: " + str(article_counts)
+
     response = requests.post(INFORM_URL, data=payload)
 
-    print response.status_code, response.reason
+    logging.info(str(response.status_code) + "\t" + response.reason)

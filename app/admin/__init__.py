@@ -9,6 +9,7 @@
 
 """
 
+
 from flask import redirect, request, url_for
 
 from flask_security import current_user
@@ -26,15 +27,13 @@ from app.model.article import Article
 
 class AppModelView(ModelView):
 
-    pass
+    def is_accessible(self):
 
-    # def is_accessible(self):
-    #
-    #     return current_user.has_role("admin")
-    #
-    # def inaccessible_callback(self, name, **kwargs):
-    #
-    #     return redirect(url_for("security.login", next=request.url))
+        return current_user.has_role("admin")
+
+    def inaccessible_callback(self, name, **kwargs):
+
+        return redirect(url_for("security.login", next=request.url))
 
 admin = Admin(name="MPWeChat Dashboard", template_mode="bootstrap3")
 

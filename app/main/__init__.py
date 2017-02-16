@@ -8,13 +8,13 @@
 
 """
 
+
 import os
+import traceback
 
 from urlparse import urlparse, parse_qs
 
-from flask import Blueprint, flash, redirect, render_template, request, send_from_directory, url_for
-
-from flask_security import login_required
+from flask import Blueprint, current_app, flash, redirect, render_template, request, send_from_directory, url_for
 
 from app.api import get_account, gen_feed, retrieve
 
@@ -23,12 +23,18 @@ from app.form import MPWeChatForm
 from app.model.feed import Feed
 from app.model.account import Account
 
+from app.utilities import cache
+
 
 main = Blueprint("main", __name__)
 
 
+def cache_key():
+
+    return request.url
+
+
 @main.route('/', methods=["GET"])
-@login_required
 def index():
 
     mp_wechat_form = MPWeChatForm()
@@ -71,33 +77,36 @@ def insert_mp_wechat():
 
 
 @main.route("/a2link")
+@cache.cached(key_prefix=cache_key)
 def a2link():
 
-    url = request.args.get("url", "")
+    try:
 
-    if url:
+        url = request.args.get("url")
 
-        image_type = parse_qs(urlparse(url).query).get("wx_fmt", [""])[0]
+        current_app.logger.debug(url)
 
-        headers = dict()
+        if url:
 
-        headers["referer"] = "http://weixin.sogou.com"
+            image_type = parse_qs(urlparse(url).query).get("wx_fmt", [""])[0]
 
-        magic_link = "http://img02.store.sogou.com/net/a/05/link?appid=100520091&url="
+            magic_link = "http://img02.store.sogou.com/net/a/05/link?appid=100520091&url="
 
-        response = retrieve(magic_link + url, headers)
+            response = retrieve(magic_link + url, dict(referer="http://weixin.sogou.com"))
 
-        # with open(os.getcwd() + "/app/static/images/" + str(time.time()) + "." + image_type, 'w') as temp:
-        #
-        #     temp.write(response.content)
+            return response.content, {"content-type": "image/" + image_type}
 
-        return response.content, {"content-type": "image/" + image_type}
+        else:
 
-    else:
+            current_app.logger.info("Empty Image URL")
 
-        print "Empty URL"
+            return "", 204
 
-        return "", 204
+    except:
+
+        current_app.logger.info(traceback.format_exc())
+
+        return '', 204
 
 
 @main.route("/feed/<name>")

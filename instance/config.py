@@ -9,6 +9,7 @@
 
 """
 
+
 import os
 
 
@@ -20,9 +21,9 @@ DB = "mysql"
 
 DB_DRIVER = "pymysql"
 
-DB_USER = ""
-DB_PSWD = ""
-DB_HOST = ""
+DB_USER = "stamaimer"
+DB_PSWD = "123456"
+DB_HOST = "192.168.33.11"
 DB_PORT = "3306"
 DB_NAME = "mpwechatrss"
 

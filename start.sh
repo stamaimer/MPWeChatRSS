@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # start.sh
 
-# celery -A celary.celery worker -B -l info
+source venv/bin/activate
 
-gunicorn -w 1 -k gevent run:app -p app.pid -b 127.0.0.1:6666 --log-level=DEBUG
+gunicorn -w 3 -k gevent run:app -p app.pid -b 127.0.0.1:5000 --log-level=DEBUG --access-logfile log/access_log --error-logfile log/error_log --preload

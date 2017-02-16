@@ -9,18 +9,22 @@
 
 """
 
+
 import os
 import re
 import json
 import time
 import inspect
+import traceback
+
+from datetime import datetime
+
 import requests
 import requests_cache
 
 from lxml import html
 from urllib import unquote
 from pyquery import PyQuery as pq
-from datetime import datetime
 from fake_useragent import UserAgent
 from sqlalchemy.exc import IntegrityError
 from werkzeug.contrib.atom import AtomFeed, FeedEntry
@@ -34,6 +38,8 @@ from app.model.article import Article
 
 
 requests_cache.install_cache(expire_after=5)
+
+BIND_URL = ""
 
 HOST = "http://mp.weixin.qq.com"
 
@@ -50,101 +56,133 @@ ACCOUNT_INFO_XPATH = ACCOUNT_BASE_XPATH + "//dl[1]/dd/text()"
 ACCOUNT_AUTH_XPATH = ACCOUNT_BASE_XPATH + "//dl[2]/dd/text()"
 
 
+def bind_ip():
+
+    response = requests.get(BIND_URL)
+
+    current_app.logger.info("Bind Status: " + response.content.upper())
+
+
 def get_proxies():
 
     url = ""
 
-    response = requests.get(url)
+    try:
 
-    if response.ok and ":" in response.text:
+        response = requests.get(url)
 
-        proxies = dict(http="http://" + response.text)
+        current_app.logger.info(str(response.status_code) + "\t" + response.text)
 
-    else:
+        if response.ok and ":" in response.text:
 
-        proxies = dict()
+            proxies = dict(http="http://" + response.text)
 
-    current_app.logger.debug(proxies)
+        else:
 
-    return proxies
+            requests_cache.clear()
+
+            proxies = dict()
+
+    except:
+
+        requests_cache.clear()
+
+        current_app.logger.info(traceback.format_exc())
+
+    finally:
+
+        return proxies
 
 
 def retrieve(url, headers=None):
 
-    current_app.logger.debug(inspect.stack()[1][3])
+    current_app.logger.info(inspect.stack()[1][3] + " retrieve " + url)
 
     if not headers:
 
         headers = dict()
 
-    headers["user-agent"] = UserAgent().random
-
-    current_app.logger.debug(url)
-
     while 1:
+
+        headers["user-agent"] = UserAgent().random
 
         try:
 
             response = requests.get(url, headers=headers, proxies=get_proxies(), timeout=3)
 
-            if "referer" in headers:
+            current_app.logger.info(str(response.status_code) + "\t" + response.reason)
 
-                return response
+            if response.ok and (url == response.request.url):
 
-            string = response.text
+                if "referer" in headers:
 
-            with open("test.html", "w") as temp:
+                    return response
 
-                temp.write(string.encode("utf-8"))
+                return response.text
 
-            return string
+            else:
 
-        except requests.exceptions.Timeout:
+                current_app.logger.info(response.request.url)
+
+                requests_cache.clear()
+
+                time.sleep(3)
+
+                continue
+
+        except:
+
+            current_app.logger.info(traceback.format_exc())
+
+            requests_cache.clear()
+
+            time.sleep(3)
 
             continue
 
-        except requests.exceptions.ProxyError:
 
-            continue
+def extract_elements(source, xpath):
 
-        except requests.exceptions.ConnectionError:
+    try:
 
-            continue
+        temp = [None]
 
+        tree = html.fromstring(source)
 
-def extract_element(string, xpath):
+        temp = tree.xpath(xpath, smart_strings=0)
 
-    tree = html.fromstring(string)
+    except:
 
-    temp = tree.xpath(xpath, smart_strings=0)
+        current_app.logger.info(traceback.format_exc())
 
-    if 1 == len(temp):
-
-        return temp[0]
-
-    else:
+    finally:
 
         return temp
 
 
+def extract_element(source, xpath):
+
+    return extract_elements(source, xpath)[0]
+
+
 def get_account(query):
 
-    string = retrieve(SEARCH_URL.format(query.encode("utf-8")))
+    source = retrieve(SEARCH_URL.format(query.encode("utf-8")))
 
-    string = string.replace("<em>", '').replace("</em>", '').replace("<!--red_beg-->", '').replace("<!--red_end-->", '')
+    source = source.replace("<em>", '').replace("</em>", '').replace("<!--red_beg-->", '').replace("<!--red_end-->", '')
 
-    name = extract_element(string, ACCOUNT_NAME_XPATH)
+    name = extract_element(source, ACCOUNT_NAME_XPATH)
 
-    text = extract_element(string, ACCOUNT_TEXT_XPATH)
+    text = extract_element(source, ACCOUNT_TEXT_XPATH)
 
-    info = extract_element(string, ACCOUNT_INFO_XPATH)
+    info = extract_element(source, ACCOUNT_INFO_XPATH)
 
-    auth = extract_element(string, ACCOUNT_AUTH_XPATH)
+    auth = extract_element(source, ACCOUNT_AUTH_XPATH)
 
-    # current_app.logger.debug("{name} {text} {info} {auth}".format(name=name.encode("utf-8"),
-    #                                                               text=text.encode("utf-8"),
-    #                                                               info=info.encode("utf-8"),
-    #                                                               auth=auth.encode("utf-8")))
+    current_app.logger.debug("{name} {text} {info} {auth}".format(name=name.encode("utf-8"),
+                                                                  text=text.encode("utf-8"),
+                                                                  info=info.encode("utf-8"),
+                                                                  auth=auth.encode("utf-8")))
 
     if isinstance(info, list):
 
@@ -167,31 +205,27 @@ def get_content(item):
 
     url = HOST + item["content_url"].replace("&amp;", '&')
 
-    string = retrieve(url)
+    source = retrieve(url)
 
-    with open(os.getcwd() + "/app/static/articles/" + item["title"] + ".html", 'w') as temp:
+    content = pq(source.replace("data-src", "src"))
 
-        content = pq(string.replace("data-src", "src"))
+    for image in content.items("img"):
 
-        for image in content.items("img"):
+        if image.attr.src:
 
-            if image.attr.src:
+            image.attr.src = unquote(url_for("main.a2link", url=image.attr.src.replace("/0?", "/640?"), _external=0))
 
-                image.attr.src = unquote(url_for("main.a2link", url=image.attr.src, _external=1))
+    for selector in [".rich_media_area_extra", "#js_sponsor_ad_area", "#js_toobar3", "#js_sg_bar", "#sg_tj"]:
 
-        for selector in [".rich_media_area_extra", "#js_sponsor_ad_area", "#js_toobar3", "#js_sg_bar", "#sg_tj"]:
-
-            content(selector).text("")
-
-        temp.write(content.html().encode("utf-8"))
+        content(selector).text("")
 
     url = url.replace("/s?", "/mp/getcomment?")
 
-    read_num = retrieve(url)
+    read_num = json.loads(retrieve(url))["read_num"]
 
-    current_app.logger.info(read_num)
-
-    return content("#js_content").html(), content("#post-date").html()
+    return re.sub(r"(<iframe .*?/>)", r"\1</iframe>", content("#js_content").html()), \
+           read_num, \
+           content("#post-date").html()
 
 
 def get_articles(url):
@@ -200,25 +234,17 @@ def get_articles(url):
 
     while 1:
 
-        string = retrieve(url)
+        source = retrieve(url)
 
         try:
 
-            source = re.search("msgList = (.*);", string).group(1)
+            source = re.search("msgList = (.*);", source).group(1)
 
         except AttributeError:
 
-            # ver_url = "http://mp.weixin.qq.com/mp/verifycode?cert={timestamp}".format(timestamp=time.time())
-            #
-            # headers = dict()
-            #
-            # headers["referer"] = url
-            #
-            # response = retrieve(ver_url, headers=headers)
-
             current_app.logger.critical(u"请输入验证码")
 
-            time.sleep(5)
+            time.sleep(3)
 
             requests_cache.clear()
 
@@ -230,28 +256,30 @@ def get_articles(url):
 
         item = item["app_msg_ext_info"]
 
-        item["content"] = get_content(item)
+        if item["content_url"]:
+
+            item["content"], item["read_num"], item["post_date"] = get_content(item)
 
         yield item
 
 
 def gen_feed(account):
 
-    string = retrieve(SEARCH_URL.format(account.name))
+    source = retrieve(SEARCH_URL.format(account.name))
 
-    url = extract_element(string, ACCOUNT_BASE_XPATH + "//p/a/@href")
+    url = extract_element(source, ACCOUNT_BASE_XPATH + "//p/a/@href")
 
-    current_app.logger.info(url)
+    current_app.logger.info(inspect.stack()[0][3] + "\t\t\t\t" + url)
 
     while not url:
 
         requests_cache.clear()
 
-        string = retrieve(SEARCH_URL.format(account.name))
+        source = retrieve(SEARCH_URL.format(account.name))
 
-        url = extract_element(string, ACCOUNT_BASE_XPATH + "//p/a/@href")
+        url = extract_element(source, ACCOUNT_BASE_XPATH + "//p/a/@href")
 
-        current_app.logger.info(url)
+        current_app.logger.info(inspect.stack()[0][3] + "\t\t\t\t" + url)
 
     atom = AtomFeed(account.text, feed_url=url_for("main.feed", name=account.name, _external=1), author=account.auth)
 
@@ -259,7 +287,9 @@ def gen_feed(account):
 
     for item in articles:
 
-        article = Article(item["title"], item["cover"], item["digest"], item["content"], account)
+        article = Article(item["title"].replace("&quot;", '"'), url_for("main.a2link", url=item["cover"], _external=1),
+                          item["digest"].replace("&quot;", '"'), item["content"].replace("&quot;", '"'),
+                          item["read_num"], item["post_date"], account)
 
         atom.add(FeedEntry(article.title, article.content, url=article.cover, updated=datetime.now()))
 

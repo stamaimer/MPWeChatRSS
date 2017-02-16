@@ -9,6 +9,7 @@
 
 """
 
+
 from app.model import db
 
 

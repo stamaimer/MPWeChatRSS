@@ -9,6 +9,7 @@
 
 """
 
+
 from app.model import db
 
 
@@ -22,11 +23,11 @@ class Account(db.Model):
 
     text = db.Column(db.String(255), unique=1, nullable=0)
 
-    info = db.Column(db.String(255), unique=0, nullable=0)
+    info = db.Column(db.String(255), unique=0, nullable=1)
 
     auth = db.Column(db.String(255), unique=0, nullable=1)
 
-    feed = db.relationship("Feed", cascade="all, delete", backref="account", uselist=0)
+    feed = db.relationship("Feed", cascade="all,delete", backref="account", uselist=0)
 
     articles = db.relationship("Article", cascade="all,delete", backref="account", lazy="dynamic")
 

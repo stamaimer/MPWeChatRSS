@@ -8,7 +8,8 @@
 
 """
 
-from wtforms import Form, StringField, validators
+
+from wtforms import Form, StringField
 
 
 class MPWeChatForm(Form):

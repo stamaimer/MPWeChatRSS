@@ -8,6 +8,7 @@
 
 """
 
+
 from flask import Flask
 
 
@@ -22,6 +23,10 @@ def create_app(config_name):
     from model import db
 
     db.init_app(app)
+
+    from utilities import cache
+
+    cache.init_app(app)
 
     from admin import admin
 

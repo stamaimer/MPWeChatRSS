@@ -9,6 +9,7 @@
 
 """
 
+
 from app.model import db
 
 
@@ -26,9 +27,13 @@ class Article(db.Model):
 
     content = db.Column(db.Text())
 
+    read_num = db.Column(db.Integer())
+
+    post_date = db.Column(db.Date())
+
     account_id = db.Column(db.Integer(), db.ForeignKey("accounts.id"))
 
-    def __init__(self, title="", cover="", digest="", content="", account=None):
+    def __init__(self, title="", cover="", digest="", content="", read_num=0, post_date="", account=None):
 
         self.title = title
 
@@ -39,6 +44,10 @@ class Article(db.Model):
         self.content = content
 
         self.account = account
+
+        self.read_num = read_num
+
+        self.post_date = post_date
 
     def __repr__(self):
 
@@ -59,5 +68,9 @@ class Article(db.Model):
         article["content"] = self.content
 
         article["account"] = self.account
+
+        article["read_num"] = self.read_num
+
+        article["post_date"] = self.post_date
 
         return article

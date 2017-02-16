@@ -9,13 +9,15 @@
 
 """
 
+
 from run import app
 from celery import Celery
 
 
 def create_celery(app):
 
-    celery = Celery(app.import_name, broker="amqp://guest:guest@localhost:5672//", backend="rpc://", include=["celary.task"])
+    celery = Celery(app.import_name, broker="amqp://guest:guest@localhost:5672//", backend="rpc://",
+                    include=["celary.task"])
 
     celery.config_from_object("celary.config")
 
@@ -36,6 +38,7 @@ def create_celery(app):
     return celery
 
 celery = create_celery(app)
+
 
 if __name__ == '__main__':
 
