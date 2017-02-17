@@ -24,5 +24,7 @@
 
 8. run server(with venv activated)
 
+    - change SERVER_NAME in `config/__init__.py` (optional)
+
     - ./start.sh
 
