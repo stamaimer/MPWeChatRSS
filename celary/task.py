@@ -20,8 +20,7 @@ import traceback
 import requests
 import logging
 
-
-INFORM_URL = ""
+from instance.config import INFORM_URL
 
 
 @celery.task

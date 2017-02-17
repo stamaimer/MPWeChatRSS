@@ -39,8 +39,6 @@ from app.model.article import Article
 
 requests_cache.install_cache(expire_after=5)
 
-BIND_URL = ""
-
 HOST = "http://mp.weixin.qq.com"
 
 SEARCH_URL = "http://weixin.sogou.com/weixin?type=1&query={}"
@@ -58,18 +56,16 @@ ACCOUNT_AUTH_XPATH = ACCOUNT_BASE_XPATH + "//dl[2]/dd/text()"
 
 def bind_ip():
 
-    response = requests.get(BIND_URL)
+    response = requests.get(current_app.config["BIND_URL"])
 
     current_app.logger.info("Bind Status: " + response.content.upper())
 
 
 def get_proxies():
 
-    url = ""
-
     try:
 
-        response = requests.get(url)
+        response = requests.get(current_app.config["PROXY_URL"])
 
         current_app.logger.info(str(response.status_code) + "\t" + response.text)
 
