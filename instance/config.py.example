@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+
+"""
+
+    MPWeChatRSS.instance.config
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    stamaimer 11/25/16
+
+"""
+
+
+
+SECRET_KEY = ""
+
+BIND_URL = ""
+
+PROXY_URL = ""
+
+INFORM_URL = ""
+
+DB = "mysql"
+
+DB_DRIVER = "pymysql"
+
+DB_USER = ""
+DB_PSWD = ""
+DB_HOST = ""
+DB_PORT = ""
+DB_NAME = ""
+
+SQLALCHEMY_DATABASE_URI = "{db}+{db_driver}://{db_user}:{db_pswd}@{db_host}:{db_port}/{db_name}".format(db=DB,
+                                                                                                        db_driver=DB_DRIVER,
+                                                                                                        db_user=DB_USER,
+                                                                                                        db_pswd=DB_PSWD,
+                                                                                                        db_host=DB_HOST,
+                                                                                                        db_port=DB_PORT,
+                                                                                                        db_name=DB_NAME)
