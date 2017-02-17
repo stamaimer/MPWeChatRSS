@@ -3,6 +3,7 @@
 venv
 
 instance
+migrations
 
 *.pid
 *.sqlite
